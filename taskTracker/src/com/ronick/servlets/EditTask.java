@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ronick.beans.TaskItem;
+import com.ronick.database.DB;
+
 /**
  * Servlet implementation class EditTask
  */
@@ -26,16 +29,31 @@ public class EditTask extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		DB db = new DB();
+		String identifiant = request.getParameter("id");
+		if(identifiant !=null) {
+			int id = Integer.parseInt(identifiant);
+			TaskItem task = db.getTaskById(id);
+			request.setAttribute("task", task);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/editTask.jsp").forward(request, response);;
+		}else {
+			response.sendRedirect("task");
+		}
+		
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		DB db = new DB();
+		int id = Integer.parseInt(request.getParameter("id"));
+		String label = request.getParameter("label-task");
+		String date = request.getParameter("date-task");
+		db.editTask(new TaskItem(id,label,date,1));
+		 
+		response.sendRedirect("task");
 	}
 
 }

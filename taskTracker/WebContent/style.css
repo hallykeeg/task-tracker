@@ -86,5 +86,10 @@ input[type=text] {
 	height:20px;
 	padding:4px;
 }
+.edit-task{
+	text-decoration:none;
+	color:#5D2590;
+	cursor:pointer;
+}
 
 

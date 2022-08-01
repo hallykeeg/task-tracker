@@ -23,7 +23,7 @@
 							<c:set var="idTask" value="task-${task.id}"></c:set>
 							<section id="${idTask}" class="task">
 								<section class="task-action"> 
-									<label class="label-task"><c:out value="${task.label}"/></label>
+									<a class="edit-task" href="edit?id=${task.id}"><label class="label-task"><c:out value="${task.label}"/></label></a>
 									<a class="delete" onClick="deleteTask( ${task.id} );"> <img src="x-button.png" title="delete task"/></a>
 								</section>
 								<section class="task-date"><span><c:out value="${task.date}"/></span></section>

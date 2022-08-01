@@ -55,6 +55,50 @@ public class DB {
 		
 		return liste;
 	}
+	public TaskItem getTaskById(int id) {
+		loadDB();
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		TaskItem task = new TaskItem();
+		try {
+			statement = connection.prepareStatement("SELECT id, label,date,active FROM task WHERE active=1 AND id=?;");
+			statement.setInt(1,  id);
+			result = statement.executeQuery();
+			if(result.next()) {
+				int idTask = Integer.parseInt( result.getString("id") );
+				String label = (String)  result.getString("label");
+				String date = (String)  result.getString("date");
+				int active = Integer.parseInt( result.getString("active") );
+				task.setId(idTask);
+				task.setLabel(label);
+				task.setDate(date);
+				task.setActive(active);
+				
+			}
+			 
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(result != null) {
+					result.close();
+				}
+				if(statement != null) {
+					statement.close();
+				}
+				if(connection != null) {
+					connection.close();
+				}
+				
+			} catch(SQLException exc) {
+				
+			}
+		}
+		return task;
+		
+	}
 	public void addTask(TaskItem task) {			
 			loadDB();
 			
@@ -65,7 +109,7 @@ public class DB {
 				ps.setString(2, task.getDate());
 				 
 				
-				ps.executeUpdate();
+				int n = ps.executeUpdate();
 				
 			} catch (SQLException e) {
 				 
@@ -85,7 +129,7 @@ public class DB {
 			ps.setInt(3, task.getActive());
 			ps.setInt(4, task.getId());
 			
-			ps.executeUpdate();
+			int n = ps.executeUpdate();
 			
 		} catch (SQLException e) {
 			 

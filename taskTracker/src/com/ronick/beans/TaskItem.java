@@ -15,6 +15,9 @@ public class TaskItem {
 		this.date = date;
 		this.active = active;
 	}
+	public TaskItem() {
+		 
+	}
 	public int getActive() {
 		return active;
 	}

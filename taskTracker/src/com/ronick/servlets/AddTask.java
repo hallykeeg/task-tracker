@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ronick.beans.TaskItem;
+import com.ronick.dao.MysqlDaoFactory;
 import com.ronick.database.DB;
 
 /**
@@ -16,13 +17,16 @@ import com.ronick.database.DB;
 @WebServlet("/AddTask")
 public class AddTask extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private MysqlDaoFactory mdf;
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AddTask() {
         super();
-        // TODO Auto-generated constructor stub
+        
+    }
+    public void init() throws ServletException{
+    	mdf = MysqlDaoFactory.getInstance();
     }
 
 	/**
@@ -36,10 +40,10 @@ public class AddTask extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DB db = new DB();
+		 
 		String label = request.getParameter("label-task");
 		String date = request.getParameter("date-task");
-		db.addTask(new TaskItem(0,label,date,1));
+		mdf.getTaskDao().addTask(new TaskItem(0,label,date,1));
 		 
 		response.sendRedirect("task");
 	}
